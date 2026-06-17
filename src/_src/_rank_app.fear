@@ -36,7 +36,7 @@ use base.Painter as Painter;
 
 Presentation1: base.Main { sys -> Block#
   .let model = { Slots#[mut Model] }
-  .let size = { 823 }
+  .let size = { 500 }
   .let myGui = { Guis#(model, size) }
   .do { model.fill(Models#myGui) }
   .do { sys.gui.run myGui }

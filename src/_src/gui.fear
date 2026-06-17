@@ -52,7 +52,7 @@ Squares:{
 
 Cross: Painter {g -> Block#
   .let size = { g.panelWidth.get }
-  .let pad = { 20 }
+  .let pad = { size.div 10 }
   .let height = { size - (pad * 2) }
   .return {g
     .color (Color.alienMint)
@@ -65,10 +65,10 @@ Cross: Painter {g -> Block#
 
   Nought: Painter {g -> Block#
   .let size = { g.panelWidth.get }
-  .let outer = { (size * 4).div(5) }
+  .let outer = { (size * 4).div 5 }
   .let inner = { size.div 2 }
-  .let posOuter = { (size - outer).div(2) }
-  .let posInner = { (size - inner).div(2) }
+  .let posOuter = { (size - outer).div 2 }
+  .let posInner = { (size - inner).div 2 }
   .let grey = { Color#(Red#(40.byte),Green#(40.byte),Blue#(40.byte),Alpha.opaque) }
   .return {g
     .color(Color.dustyRose)
