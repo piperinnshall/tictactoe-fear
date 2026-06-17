@@ -52,7 +52,7 @@ Squares:{
 
 Cross: Painter {g -> Block#
   .let size = { g.panelWidth.get }
-  .let pad = { 10 }
+  .let pad = { 20 }
   .let height = { size - (pad * 2) }
   .return {g
     .color (Color.alienMint)
