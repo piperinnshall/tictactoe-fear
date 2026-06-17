@@ -1,0 +1,81 @@
+Guis:{ #(model: mut Slot[mut Model], size: imm Nat): mut Gui -> Block#
+  .let label = { Slots#[mut Label] }
+  .let canvas = { 0~~9.map { _ -> Slots#[mut Pane] }.list }
+  .let lightGrey = { Color#(Red#(83.byte),Green#(81.byte),Blue#(81.byte),Alpha.opaque) }
+  .return{ mut Gui:Consumer[mut Frame] {::
+    .title "Tic Tac Toe"
+    .contentB {::
+      .width size
+      .height size
+      .background lightGrey
+      .north(Menu#(model!, label, size))
+      .center(Squares#(model!, canvas, size))
+      };
+    mut .setLabel(text: Str): Void -> Block#(label!.text(text), Void);
+    mut .setImage(idx: Nat, p: Painter): Void-> Block#(canvas.get(idx)!.paint(p),Void);
+    }}}
+
+Menu:{ #(model: mut Model, label: mut Slot[mut Label], size: imm Nat): mut Scope[Pane]-> {::
+  .height 60
+  .button{::
+    .background(Color.rubberDuck) 
+    .text "Reset Game"
+    .action { model.reset }}
+  .label{::
+    .background(Color.dustyRose) 
+    .text "Turn: Noughts"
+    .save(label)};
+  }}
+
+Squares:{
+  #(model: mut Model, canvas: mut List[mut Slot[mut Pane]], size: imm Nat): mut Scope[Pane]-> {::
+    .width((size * 7).div 8)
+    .height((size * 7).div 8)
+    .pane(this#(model, 0, canvas, size))
+    .pane(this#(model, 1, canvas, size))
+    .pane(this#(model, 2, canvas, size))
+    .pane(this#(model, 3, canvas, size))
+    .pane(this#(model, 4, canvas, size))
+    .pane(this#(model, 5, canvas, size))
+    .pane(this#(model, 6, canvas, size))
+    .pane(this#(model, 7, canvas, size))
+    .pane(this#(model, 8, canvas, size))
+    };
+  #(model: mut Model, idx: Nat, canvas: mut List[mut Slot[mut Pane]], size: imm Nat): mut Scope[Pane] -> {::
+    .width(size.div 4)
+    .height(size.div 4)
+    .background(Color#(Red#(40.byte),Green#(40.byte),Blue#(40.byte),Alpha.opaque))
+    .save(canvas.get(idx))
+    .mouse {::.clicked { event -> model.play(idx)}};
+  }
+}
+
+Cross: Painter {g -> Block#
+  .let size = { g.panelWidth.get }
+  .let pad = { 10 }
+  .let height = { size - (pad * 2) }
+  .return {g
+    .color (Color.alienMint)
+    .position(X#pad, Y#pad)
+    .image(base.Cache.of(height.norm, { h ->
+      Crossimg.consumeImage("A", 3_000_000)
+        .scaleToHeight(Height#(h.get))
+      }))
+  }}
+
+  Nought: Painter {g -> Block#
+  .let size = { g.panelWidth.get }
+  .let outer = { (size * 4).div(5) }
+  .let inner = { size.div 2 }
+  .let posOuter = { (size - outer).div(2) }
+  .let posInner = { (size - inner).div(2) }
+  .let grey = { Color#(Red#(40.byte),Green#(40.byte),Blue#(40.byte),Alpha.opaque) }
+  .return {g
+    .color(Color.dustyRose)
+    .position(X#posOuter, Y#posOuter)
+    .oval(Width#outer, Height#outer)
+    .color grey
+    .position(X#posInner, Y#posInner)
+    .oval(Width#inner, Height#inner)
+  }
+}

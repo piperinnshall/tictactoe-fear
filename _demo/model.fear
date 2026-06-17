@@ -1,0 +1,41 @@
+Cell: WidenTo[Cell]{
+  #: Painter;
+  .label: Str;
+  .next: Cell -> None;
+  ==(c: Cell): Bool-> this.label == (c.label);
+  }
+N:Cell{Nought;  .label -> "Turn: Noughts";  .next -> C; }
+C:Cell{Cross;   .label -> "Turn: Crosses";  .next -> N; }
+None:Cell{{::}; .label -> "Game Over"; }
+
+Models: { #(gui: mut Gui): mut Model -> Block#
+  .var[Cell] turn = { N }
+  .let cells = { 0~~9.map { _ -> Vars#[Cell](None) }.list }
+  .let winningLines = { Lists#(
+      Lists#(0,1,2), Lists#(3,4,5), Lists#(6,7,8),
+      Lists#(0,3,6), Lists#(1,4,7), Lists#(2,5,8),
+      Lists#(0,4,8), Lists#(2,4,6)
+    )}  
+ .return { mut Model: { 'self
+    mut .checkWin: Bool -> winningLines.flow.any { line -> Block# 
+      .let a = {cells.get(line.get(0)).get} 
+      .let b = {cells.get(line.get(1)).get} 
+      .let c = {cells.get(line.get(2)).get} 
+      .return {a == None .not && {a == b && {a ==  c}}}
+      };
+    mut .play(i: Nat): Void -> Block#
+      .if {cells.get(i).get == None}
+      .do {Block#(
+        cells.get(i).set(turn.get),
+        gui.setImage(i, cells.get(i).get#),
+        turn.set(self.checkWin.if{ None; .else->turn.get.next}),
+        gui.setLabel(turn.get.label)
+      )}
+      .done;
+    mut .reset(): Void -> Block#(
+      turn.set(N),
+      0~~9.forEach { i -> cells.get(i).set(None) },
+      0~~9.forEach { i -> gui.setImage(i, cells.get(i).get#) },
+      gui.setLabel("Turn: Noughts"),
+      )
+    }}}

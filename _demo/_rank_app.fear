@@ -1,0 +1,44 @@
+use base.Alpha as Alpha;
+use base.Red as Red;
+use base.Green as Green;
+use base.Blue as Blue;
+use base.Void as Void;
+use base.ToStr as ToStr;
+use base.Str as Str;
+use base.Nat as Nat;
+use base.Gui as GuiC;
+use base.Block as Block;
+use base.Bool as Bool;
+use base.True as True;
+use base.False as False;
+use base.Consumer as Consumer;
+use base.Opt as Opt;
+use base.Opts as Opts;
+use base.Vars as Vars;
+use base.Frame as Frame;
+use base.Debug as Debug;
+use base.Color as Color;
+use base.WidenTo as WidenTo;
+use base.List as List;
+use base.Lists as Lists;
+use base.WidthNat as Width;
+use base.HeightNat as Height;
+use base.XNat as X;
+use base.YNat as Y;
+use base.KeyStroke as Key;
+use base.Label as Label;
+use base.Slot as Slot;
+use base.Slots as Slots;
+use base.Pane as Pane;
+use base.Border as Border;
+use base.Scope as Scope;
+use base.Painter as Painter;
+
+Presentation1: base.Main { sys -> Block#
+  .let model = { Slots#[mut Model] }
+  .let size = { 823 }
+  .let myGui = { Guis#(model, size) }
+  .do { model.fill(Models#myGui) }
+  .do { sys.gui.run myGui }
+  .done
+  }
