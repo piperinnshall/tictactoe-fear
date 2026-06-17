@@ -55,7 +55,6 @@ Cross: Painter {g -> Block#
   .let pad = { size.div 10 }
   .let height = { size - (pad * 2) }
   .return {g
-    .color (Color.alienMint)
     .position(X#pad, Y#pad)
     .image(base.Cache.of(height.norm, { h ->
       Crossimg.consumeImage("A", 3_000_000)
@@ -63,7 +62,7 @@ Cross: Painter {g -> Block#
       }))
   }}
 
-  Nought: Painter {g -> Block#
+Nought: Painter {g -> Block#
   .let size = { g.panelWidth.get }
   .let outer = { (size * 4).div 5 }
   .let inner = { size.div 2 }
@@ -77,5 +76,4 @@ Cross: Painter {g -> Block#
     .color grey
     .position(X#posInner, Y#posInner)
     .oval(Width#inner, Height#inner)
-  }
-}
+  }}
